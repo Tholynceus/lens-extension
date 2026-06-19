@@ -1,0 +1,916 @@
+#lens-panel {
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.07), transparent 60%),
+    linear-gradient(180deg, #0e1422 0%, #0a0e18 55%, #070a11 100%);
+  border: 1px solid rgba(130,160,210,0.10);
+  border-radius: 14px;
+  margin: 10px 0;
+  font-family: -apple-system, 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  color: #c0d4e8;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  -webkit-tap-highlight-color: transparent;
+}
+#lens-panel *::selection { background: rgba(255,255,255,0.18); }
+#lens-panel button, #lens-panel .lens-section-header, #lens-panel .lens-wallet-addr, #lens-panel .lens-add-label { -webkit-tap-highlight-color: transparent; outline: none; }
+#lens-panel button:focus, #lens-panel .lens-section-header:focus { outline: none; }
+.lens-topbar { display:flex; align-items:center; justify-content:space-between; padding:13px 16px; background:linear-gradient(180deg, rgba(255,255,255,0.05), transparent); border-bottom:1px solid rgba(255,255,255,0.07); }
+.lens-brand { font-size:12px; font-weight:700; color:#f4f7fb; letter-spacing:3px; text-shadow:0 0 16px rgba(255,255,255,0.35); }
+.lens-status { display:flex; align-items:center; gap:5px; font-size:9px; color:#4a5568; letter-spacing:1px; }
+.lens-status-dot { width:5px; height:5px; border-radius:50%; background:#ffffff; animation:lens-blink 1.2s infinite; }
+.lens-dot-green { background:#2ecc71!important; animation:none!important; }
+@keyframes lens-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.lens-labels-row { display:flex; align-items:center; gap:6px; padding:0 16px 12px; flex-wrap:wrap; }
+.lens-add-label { padding:4px 11px; border-radius:9px; font-size:10px; border:1px solid rgba(255,255,255,0.14); color:#dfe7ef; background:rgba(255,255,255,0.06); cursor:pointer; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); transition:background .2s, transform .1s; }
+.lens-add-label:hover { background:rgba(255,255,255,0.12); }
+.lens-add-label:active { transform:scale(0.96); }
+.lens-label { padding:3px 10px; border-radius:8px; font-size:10px; font-weight:600; border:1px solid; }
+.lens-label.kol { border-color:rgba(255,255,255,0.18); color:#f0f4f9; background:rgba(255,255,255,0.08); }
+.lens-label.dev { border-color:rgba(216,160,90,0.28); color:#d8a05a; background:rgba(216,160,90,0.08); }
+.lens-label.builder { border-color:rgba(46,204,113,0.3); color:#2ecc71; background:rgba(46,204,113,0.08); }
+.lens-data-row { display:flex; gap:18px; padding:0 16px 14px; flex-wrap:wrap; }
+.lens-pill-group { display:flex; align-items:center; gap:6px; }
+.lens-data-label { font-size:9px; color:#3a4a5a; letter-spacing:1px; text-transform:uppercase; }
+.lens-pill { padding:3px 9px; border-radius:6px; font-size:10px; color:#8ba8bf; border:1px solid #18202c; background:#0d1520; font-family:'SF Mono',monospace; }
+.lens-section { border-top:1px solid rgba(130,160,210,0.07); }
+.lens-section.collapsed .lens-section-body { max-height:0; opacity:0; padding-top:0; padding-bottom:0; }
+.lens-section-header { display:flex; align-items:center; justify-content:space-between; padding:9px 16px; cursor:pointer; user-select:none; transition:background .15s; }
+.lens-section-header:hover { background:linear-gradient(90deg, rgba(255,255,255,0.05), transparent); }
+.lens-section-title { font-size:10px; font-weight:700; color:#7d96ab; letter-spacing:1.2px; text-transform:uppercase; display:flex; align-items:center; gap:7px; }
+.lens-chain-badge { font-size:8px; padding:2px 6px; border-radius:5px; background:rgba(224,106,106,0.08); color:#e06a6a; border:1px solid rgba(224,106,106,0.22); }
+.lens-section-arrow { display:inline-block; width:7px; height:7px; border-right:1.6px solid #8a99a8; border-bottom:1.6px solid #8a99a8; transform:rotate(45deg); transition:transform .2s ease; opacity:.65; position:relative; top:-2px; }
+.lens-section.collapsed .lens-section-arrow { transform:rotate(-45deg); top:0; }
+.lens-section-body { padding:2px 16px 12px; overflow:hidden; opacity:1; transition:max-height .3s cubic-bezier(.4,0,.2,1), opacity .22s ease, padding .28s ease; }
+.lens-loading { display:flex; align-items:center; gap:8px; color:#3a4a5a; font-size:10px; font-family:monospace; }
+.lens-spinner { width:10px; height:10px; border:1.5px solid rgba(255,255,255,0.15); border-top-color:#ffffff; border-radius:50%; animation:lens-spin 0.8s linear infinite; }
+@keyframes lens-spin { to{transform:rotate(360deg)} }
+.lens-empty { font-size:10px; color:#3a4a5a; font-family:monospace; padding:4px 0; }
+.lens-deploy-bar { display:flex; align-items:center; gap:10px; padding:8px; background:#060c14; border-radius:6px; border:1px solid #0d1828; margin-bottom:8px; }
+.lens-deploy-num { font-size:24px; font-weight:800; font-family:monospace; line-height:1; }
+.lens-deploy-info { flex:1; }
+.lens-deploy-title { font-size:11px; color:#6a8899; font-weight:600; }
+.lens-deploy-sub { font-size:9px; color:#3a4a5a; font-family:monospace; margin-top:2px; }
+.lens-risk-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; font-family:monospace; white-space:nowrap; }
+.lens-ok { color:#2ecc71; }
+.lens-warn { color:#d8a05a; }
+.lens-danger { color:#e06a6a; }
+.lens-risk-badge.lens-ok { background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.2); }
+.lens-risk-badge.lens-warn { background:rgba(216,160,90,0.08); border:1px solid rgba(216,160,90,0.22); }
+.lens-risk-badge.lens-danger { background:rgba(224,106,106,0.07); border:1px solid rgba(224,106,106,0.2); }
+.lens-contract-row { display:flex; justify-content:space-between; padding:4px 6px; background:#060c14; border-radius:3px; font-family:monospace; font-size:10px; margin-bottom:3px; }
+.lens-contract-addr { color:#e7eef6; }
+.lens-contract-date { color:#3a4a5a; }
+.lens-claim-stats { display:flex; gap:12px; margin-bottom:8px; }
+.lens-claim-stat { flex:1; background:#060c14; border:1px solid #0d1828; border-radius:5px; padding:8px; text-align:center; }
+.lens-stat-val { display:block; font-size:16px; font-weight:800; font-family:'SF Mono',monospace; }
+.lens-stat-lbl { display:block; font-size:8px; color:#4a5b6a; margin-top:4px; letter-spacing:1px; text-transform:uppercase; }
+.lens-claim-row { display:flex; justify-content:space-between; padding:4px 6px; background:#060c14; border-radius:3px; font-family:monospace; font-size:10px; margin-bottom:3px; }
+.lens-claim-date { color:#3a4a5a; }
+.lens-claim-amount { font-weight:600; }
+.lens-github-card { display:flex; flex-direction:column; gap:8px; }
+.lens-gh-top { display:flex; flex-direction:column; gap:2px; }
+.lens-gh-name { font-size:12px; font-weight:700; color:#e7eef6; }
+.lens-gh-meta { font-size:9px; color:#3a4a5a; font-family:monospace; }
+.lens-gh-langs { display:flex; gap:4px; flex-wrap:wrap; }
+.lens-lang-tag { font-size:9px; padding:1px 6px; border-radius:3px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:#e7eef6; font-family:monospace; }
+.lens-gh-repos { display:flex; flex-direction:column; gap:3px; }
+.lens-gh-repo { display:flex; justify-content:space-between; padding:4px 6px; background:#060c14; border-radius:3px; font-family:monospace; font-size:10px; }
+.lens-gh-repo-name { color:#6a8899; }
+.lens-gh-repo-lang { color:#d8a05a; font-size:9px; }
+.lens-footer { padding:6px 14px; text-align:right; font-size:9px; color:#2a3a4a; font-family:monospace; border-top:1px solid #0a1018; }
+.lens-footer-brand { color:#e7eef6; font-weight:700; }
+
+/* ── BANKRBOT STYLES ── */
+.lens-bankr-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(216,160,90,0.1);
+  color: #d8a05a;
+  border: 1px solid rgba(216,160,90,0.25);
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+
+.lens-label.bankr {
+  border-color: rgba(216,160,90,0.3);
+  color: #d8a05a;
+  background: rgba(216,160,90,0.08);
+}
+
+.lens-bankr-green { color: #2ecc71; }
+.lens-bankr-teal { color: #00d4ff; }
+
+.lens-bankr-summary {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.lens-bankr-stat {
+  flex: 1;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #16202c;
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.lens-bankr-tokens {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lens-bankr-token {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 13px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #16202c;
+  border-radius: 10px;
+  font-size: 11px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.lens-bankr-token:hover { background: rgba(255,255,255,0.035); }
+
+.lens-bankr-token.has-fees {
+  border-color: rgba(216,160,90,0.18);
+}
+
+.lens-bankr-token-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.lens-bankr-token-symbol {
+  font-size: 12px;
+  font-weight: 700;
+  color: #d8a05a;
+}
+
+.lens-bankr-token-name {
+  font-size: 10px;
+  color: #5a6b7a;
+}
+
+.lens-bankr-token-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.lens-bankr-fee-claimed {
+  font-size: 10px;
+  color: #d8a05a;
+  font-weight: 600;
+}
+
+.lens-bankr-fee-pending {
+  font-size: 9px;
+  color: #00d4ff;
+}
+
+.lens-bankr-fee-none {
+  font-size: 9px;
+  color: #3a4a5a;
+}
+
+.lens-bankr-more {
+  font-size: 9px;
+  color: #3a4a5a;
+  font-family: monospace;
+  text-align: center;
+  margin-top: 6px;
+  padding: 4px;
+  border: 1px dashed #0d1828;
+  border-radius: 3px;
+}
+
+/* ── DEV SOLD STYLES ── */
+.lens-sold-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(224,106,106,0.1);
+  color: #e06a6a;
+  border: 1px solid rgba(224,106,106,0.25);
+  letter-spacing: 1px;
+  font-family: monospace;
+  animation: lens-blink 2s infinite;
+}
+
+.lens-sold-alert {
+  background: rgba(224,106,106,0.07);
+  border: 1px solid rgba(224,106,106,0.25);
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #e06a6a;
+  font-family: monospace;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.lens-sold-clean {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #2ecc71;
+  font-family: monospace;
+  padding: 4px 0;
+}
+
+.lens-sold-clean-icon {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lens-sold-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lens-sold-item {
+  background: rgba(224,106,106,0.04);
+  border: 1px solid rgba(224,106,106,0.15);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.lens-sold-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(224,106,106,0.06);
+  border-bottom: 1px solid rgba(224,106,106,0.1);
+  font-family: monospace;
+}
+
+.lens-sold-symbol {
+  font-size: 11px;
+  font-weight: 700;
+  color: #e06a6a;
+}
+
+.lens-sold-name {
+  font-size: 9px;
+  color: #4a5568;
+  flex: 1;
+}
+
+.lens-sold-count {
+  font-size: 9px;
+  color: #e08585;
+  font-family: monospace;
+  background: rgba(224,106,106,0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.lens-sold-details {
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lens-sold-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-family: monospace;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(224,106,106,0.05);
+}
+
+.lens-sold-row:last-child { border-bottom: none; }
+
+.lens-sold-lbl { color: #4a5568; }
+.lens-sold-val { color: #8899aa; }
+.lens-sold-val.danger { color: #e06a6a; font-weight: 700; }
+
+/* ── V1.5.0 NEW STYLES ── */
+.lens-bankr-token-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.lens-bankr-share {
+  font-size: 9px;
+  color: #e7eef6;
+  font-family: monospace;
+  background: rgba(255,255,255,0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: auto;
+}
+
+.lens-bankr-beneficiary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  font-family: monospace;
+  padding: 4px 6px;
+  background: rgba(216,160,90,0.05);
+  border: 1px solid rgba(216,160,90,0.08);
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.lens-ben-lbl {
+  color: #3a4a5a;
+  min-width: 60px;
+}
+
+.lens-ben-val {
+  color: #d8a05a;
+  word-break: break-all;
+}
+
+.lens-bankr-fees-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lens-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-family: monospace;
+  padding: 2px 0;
+}
+
+.lens-fee-lbl {
+  color: #3a4a5a;
+}
+
+.lens-fee-val {
+  color: #8899aa;
+  text-align: right;
+}
+
+/* ── V2.0 MONITORING STYLES ── */
+.lens-label.new-launch {
+  border-color: rgba(0,212,255,0.35);
+  color: #00d4ff;
+  background: rgba(0,212,255,0.1);
+  font-size: 9px;
+}
+
+.lens-label.claimed {
+  border-color: rgba(255,215,0,0.35);
+  color: #d8c060;
+  background: rgba(255,215,0,0.1);
+  font-size: 9px;
+}
+
+.lens-label.pleasebro {
+  border-color: rgba(46,204,113,0.35);
+  color: #2ecc71;
+  background: rgba(46,204,113,0.1);
+  font-size: 9px;
+}
+
+.lens-label.custom {
+  border-color: rgba(180,120,255,0.35);
+  color: #c084fc;
+  background: rgba(180,120,255,0.1);
+  font-size: 9px;
+}
+
+.lens-new-badge {
+  font-size: 8px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(0,212,255,0.15);
+  color: #00d4ff;
+  border: 1px solid rgba(0,212,255,0.3);
+  font-family: monospace;
+  margin-left: auto;
+}
+
+.lens-launched-ago {
+  font-size: 8px;
+  color: #3a4a5a;
+  font-family: monospace;
+  margin-left: 4px;
+}
+
+.lens-activity-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-family: monospace;
+}
+
+.lens-alert-claim {
+  background: rgba(255,215,0,0.06);
+  border: 1px solid rgba(255,215,0,0.2);
+}
+
+.lens-alert-sold {
+  background: rgba(224,106,106,0.06);
+  border: 1px solid rgba(224,106,106,0.25);
+}
+
+.lens-alert-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.lens-alert-content {
+  flex: 1;
+}
+
+.lens-alert-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #c0d4e8;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.lens-alert-sub {
+  font-size: 9px;
+  color: #4a6a7a;
+  line-height: 1.4;
+}
+
+/* ── MOBILE / NARROW SCREENS (Android Kiwi, small viewports) ── */
+@media (max-width: 480px) {
+  #lens-panel {
+    font-size: 12px;
+    overflow-x: hidden;
+  }
+  /* Tighter horizontal padding so content doesn't get cut off */
+  .lens-topbar,
+  .lens-labels-row,
+  .lens-data-row,
+  .lens-section-header,
+  .lens-section-body { padding-left: 10px; padding-right: 10px; }
+
+  /* Data row: let pills wrap instead of overflowing */
+  .lens-data-row { gap: 8px; }
+
+  /* Deploy bar: allow stacking on very narrow screens */
+  .lens-deploy-bar { flex-wrap: wrap; gap: 8px; }
+  .lens-deploy-num { font-size: 20px; }
+
+  /* Contract / fee rows: keep value from pushing width out */
+  .lens-contract-row { font-size: 9px; word-break: break-all; }
+
+  /* Any token-card vertical rows stay full width and wrap nicely */
+  .lens-rows > div { flex-wrap: wrap; gap: 4px 10px; }
+
+  /* Beneficiary bar + chips never exceed viewport */
+  #lens-panel * { max-width: 100%; box-sizing: border-box; }
+
+  /* Name badges under profile: smaller + wrap */
+  #lens-name-badges { gap: 4px; }
+  #lens-name-badges .lens-nb-pill { font-size: 9px; padding: 2px 6px; }
+}
+
+/* Extra-narrow safety (≤360px, older/smaller Android) */
+@media (max-width: 360px) {
+  .lens-topbar, .lens-labels-row, .lens-data-row,
+  .lens-section-header, .lens-section-body { padding-left: 8px; padding-right: 8px; }
+  #lens-panel { font-size: 11px; }
+}
+
+.lens-soon-badge {
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(125,150,171,0.08);
+  color: #7d96ab;
+  border: 1px solid rgba(125,150,171,0.22);
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* ── Share to X button ── */
+.lens-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #fff;
+  color: #0a0b0d;
+  border: none;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  font-family: -apple-system, 'Inter', system-ui, sans-serif;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.lens-share-btn:hover { opacity: 0.88; }
+.lens-share-btn:active { transform: translateY(1px); }
+.lens-share-btn svg { flex-shrink: 0; }
+
+/* ── Dev Wallet card ── */
+.lens-devwallet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 11px;
+  margin-bottom: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 9px;
+}
+.lens-devwallet-lbl {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #5a6b7a;
+}
+.lens-devwallet-addr {
+  flex: 1;
+  font-family: 'SF Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #e7eef6;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color .15s;
+}
+.lens-devwallet-addr:hover { color: #e7eef6; }
+.lens-devwallet-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: #5a6b7a;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.lens-devwallet-copy:hover { background: rgba(255,255,255,0.1); color: #e7eef6; border-color: rgba(255,255,255,0.35); }
+
+/* ── Frontrun Badge ── */
+.lens-label.frontrun {
+  border-color: rgba(255,180,40,0.4);
+  color: #ffb428;
+  background: rgba(255,180,40,0.1);
+  font-weight: 700;
+  font-size: 9px;
+  box-shadow: 0 0 8px rgba(255,180,40,0.15);
+}
+
+/* ── AI Wallet Tags ── */
+.lens-label.ai-serial   { border-color:rgba(180,120,255,0.35); color:#c084fc; background:rgba(180,120,255,0.1); font-size:9px; }
+.lens-label.ai-paper    { border-color:rgba(224,106,106,0.35); color:#e06a6a; background:rgba(224,106,106,0.1); font-size:9px; }
+.lens-label.ai-diamond  { border-color:rgba(0,212,255,0.35);   color:#00d4ff; background:rgba(0,212,255,0.1);   font-size:9px; }
+.lens-label.ai-feehunter{ border-color:rgba(255,215,0,0.35);   color:#d8c060; background:rgba(255,215,0,0.1);   font-size:9px; }
+.lens-label.ai-whale    { border-color:rgba(46,204,113,0.35);  color:#2ecc71; background:rgba(46,204,113,0.1);  font-size:9px; }
+.lens-label.ai-fresh    { border-color:rgba(255,255,255,0.35);  color:#e7eef6; background:rgba(255,255,255,0.1);  font-size:9px; }
+
+/* ── Trust Score ── */
+.lens-trust {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #16202c;
+  border-radius: 10px;
+}
+.lens-trust-ring {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.lens-trust-inner {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #0a0f17;
+  display: flex; align-items: center; justify-content: center;
+}
+.lens-trust-num { font-size: 15px; font-weight: 800; font-family: 'SF Mono', monospace; }
+.lens-trust-body { flex: 1; }
+.lens-trust-tier { font-size: 13px; font-weight: 800; letter-spacing: 0.3px; }
+.lens-trust-reason { font-size: 9.5px; color: #5a6b7a; margin-top: 2px; }
+
+/* ── Token quick links ── */
+.lens-token-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  flex-wrap: wrap;
+}
+.lens-token-links a, .lens-token-copy {
+  font-size: 9px;
+  font-weight: 600;
+  color: #6a8899;
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #1f2a36;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.lens-token-links a:hover, .lens-token-copy:hover {
+  color: #e7eef6; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06);
+}
+
+/* ── Action row (share + watch) ── */
+.lens-action-row { display: flex; gap: 8px; margin-top: 10px; }
+.lens-action-row .lens-share-btn { margin-top: 0; flex: 1; }
+.lens-watch-btn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 14px;
+  background: transparent;
+  color: #7d96ab;
+  border: 1px solid #2a3a4a;
+  border-radius: 9px;
+  font-size: 11px; font-weight: 700;
+  cursor: pointer; font-family: inherit;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.lens-watch-btn:hover { color: #ffb428; border-color: rgba(255,180,40,0.4); }
+.lens-watch-btn.watched { color: #ffb428; border-color: rgba(255,180,40,0.5); background: rgba(255,180,40,0.08); }
+.lens-watch-btn.watched svg path { fill: #ffb428; }
+
+/* ── Username History (clean chain) ── */
+.lens-uname {
+  padding: 9px 11px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #16202c;
+  border-radius: 9px;
+  margin-top: 8px;
+}
+.lens-uname-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.lens-uname-lbl { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #7d96ab; text-transform: uppercase; }
+.lens-uname-count { font-size: 8px; font-weight: 700; color: #d8a05a; background: rgba(216,160,90,0.1); border: 1px solid rgba(216,160,90,0.25); padding: 2px 6px; border-radius: 4px; }
+.lens-uname-ok { font-size: 10px; color: #2ecc71; font-weight: 600; }
+.lens-uname-chain { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-family: 'SF Mono', monospace; }
+.lens-uname-old { font-size: 10px; color: #8899a6; }
+.lens-uname-cur { font-size: 10px; color: #e7eef6; font-weight: 700; }
+.lens-uname-arrow { font-size: 10px; color: #3a4a5a; }
+.lens-uname-note { font-size: 8px; color: #3a4a5a; font-family: monospace; margin-top: 6px; }
+
+/* ── GitHub clean rows ── */
+.lens-gh { display: flex; flex-direction: column; gap: 6px; }
+.lens-gh-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lens-gh-lbl { font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #4a5b6a; text-transform: uppercase; flex-shrink: 0; }
+.lens-gh-handle { font-size: 11px; font-weight: 700; color: #e7eef6; text-decoration: none; }
+.lens-gh-handle:hover { color: #e7eef6; }
+.lens-gh-val { font-size: 10px; color: #8899a6; font-family: 'SF Mono', monospace; text-align: right; }
+.lens-gh-langs { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ── CA History — mobile tidy ── */
+@media (max-width: 480px) {
+  .lens-contract-row {
+    flex-wrap: wrap;
+    gap: 2px 6px;
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+  .lens-contract-addr { word-break: break-all; flex: 1 1 auto; min-width: 0; }
+  .lens-contract-date { flex-shrink: 0; }
+  .lens-uname-chain { gap: 4px; }
+  .lens-uname-old, .lens-uname-cur { font-size: 9px; }
+  .lens-gh-row { flex-wrap: wrap; gap: 3px 8px; }
+  .lens-gh-val, .lens-gh-langs { text-align: left; justify-content: flex-start; }
+}
+
+/* Compact mode — smaller injected card (toggle: X settings > Compact mode) */
+#lens-panel.lens-compact { font-size: 11px; }
+#lens-panel.lens-compact .lens-bankr-token,
+#lens-panel.lens-compact .lens-section,
+#lens-panel.lens-compact .lens-activity-alert { padding: 7px 9px; margin-top: 6px; }
+#lens-panel.lens-compact .lens-rows { gap: 4px !important; }
+#lens-panel.lens-compact .lens-footer { display: none; }
+#lens-panel.lens-compact .lens-soon-badge ~ * { font-size: 10px; }
+
+/* GitHub source tag — shows where LENS found the dev's GitHub (link/bio/tweet/handle match) */
+.lens-gh-src {
+  font-size: 8px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase;
+  color: #8899a6; border: 1px solid #2f3b47; border-radius: 5px; padding: 1px 5px;
+  white-space: nowrap;
+}
+
+/* CA removal tracker — flags contract addresses deleted from a profile bio */
+.lens-label.ca-removed { background:#3a0d0d; color:#ff6b5e; border:1px solid #e0413a; }
+#lens-ca-history {
+  margin: 8px 0 4px; padding: 8px 10px; border-radius: 8px;
+  background: rgba(224,65,58,0.08); border: 1px solid rgba(224,65,58,0.35);
+}
+.lens-cahist-title { font-size: 9px; font-weight: 700; letter-spacing: .6px; color: #ff6b5e; margin-bottom: 6px; }
+.lens-cahist-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 2px 0; }
+.lens-cahist-row a { font-family: monospace; font-size: 11px; color: #ff9b91; text-decoration: none; }
+.lens-cahist-row a:hover { text-decoration: underline; }
+.lens-cahist-meta { font-size: 9px; color: #b07a76; text-align: right; }
+.lens-cahist-more { font-size: 9px; color: #b07a76; margin-top: 4px; }
+
+/* ── Mentioned Wallets archive ── */
+.lens-arch-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  color: #dbe3ec;
+  border: 1px solid rgba(255,255,255,0.16);
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+.lens-wallet {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 7px 9px;
+  margin-bottom: 6px;
+}
+.lens-wallet:last-child { margin-bottom: 0; }
+.lens-wallet-head { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+.lens-wallet-addr {
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c3d2e0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.lens-wallet-addr:hover { color:#ffffff; }
+.lens-wallet-tags { display:flex; gap:4px; flex-wrap:wrap; }
+.lens-wtag {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  font-family: monospace;
+}
+.lens-wtag.bio { background: rgba(120,140,160,0.12); color:#8aa0b4; border:1px solid rgba(120,140,160,0.25); }
+.lens-wtag.tw  { background: rgba(255,255,255,0.10); color:#e2e8f0; border:1px solid rgba(255,255,255,0.20); }
+.lens-wtag.del { background: rgba(232,72,72,0.12); color:#f06262; border:1px solid rgba(232,72,72,0.35); }
+.lens-wallet-tweets { margin-top:6px; display:flex; flex-direction:column; gap:4px; }
+.lens-wtweet {
+  font-size: 10px;
+  line-height: 1.4;
+  color: #8499a8;
+  padding: 4px 6px;
+  background: rgba(255,255,255,0.02);
+  border-left: 2px solid rgba(120,140,160,0.3);
+  border-radius: 3px;
+}
+.lens-wtweet.del {
+  color: #cf8a8a;
+  border-left-color: #e84848;
+  background: rgba(232,72,72,0.06);
+  text-decoration: line-through;
+  text-decoration-color: rgba(232,72,72,0.5);
+}
+
+/* ── Origin Check ── */
+.lens-origin-badge {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.08);
+  color: #dbe3ec;
+  border: 1px solid rgba(255,255,255,0.16);
+  letter-spacing: 1px;
+  font-family: monospace;
+}
+.lens-origin-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  color: #f2f5f9;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 16px rgba(0,0,0,0.28);
+  transition: background .2s ease, transform .1s ease;
+}
+.lens-origin-btn:hover { background: rgba(255,255,255,0.14); }
+.lens-origin-btn:active { transform: scale(0.97); }
+.lens-origin-hint { font-size: 9px; color: #6a7b8a; margin-top: 7px; line-height: 1.4; }
+.lens-oflags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+.lens-oflag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.4px;
+  font-family: monospace;
+}
+.lens-oflag.bad  { background: rgba(232,72,72,0.12);  color: #f06262; border: 1px solid rgba(232,72,72,0.35); }
+.lens-oflag.warn { background: rgba(216,160,90,0.12); color: #e0a85a; border: 1px solid rgba(216,160,90,0.35); }
+.lens-oflag.ok   { background: rgba(93,202,165,0.1);  color: #5DCAA5; border: 1px solid rgba(93,202,165,0.3); }
+.lens-orow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 3px 0; }
+.lens-olabel { font-size: 10px; color: #7d96ab; }
+.lens-oval { font-size: 11px; color: #c3d2e0; font-family: monospace; font-weight: 600; text-align: right; }
+
+/* ── Cabal Wallet clusters ── */
+.lens-cabal-sum {
+  font-size: 10px; font-weight: 700; color: #e0a85a;
+  background: rgba(216,160,90,0.1); border: 1px solid rgba(216,160,90,0.3);
+  border-radius: 8px; padding: 7px 9px; margin-bottom: 9px; line-height: 1.4;
+}
+.lens-cabal-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px; padding: 8px 10px; margin-bottom: 6px;
+}
+.lens-cabal-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.lens-cabal-n { font-size: 10px; color: #c3d2e0; font-weight: 600; }
+.lens-cabal-pct { margin-left: auto; font-size: 12px; font-weight: 700; color: #f2f5f9; font-family: monospace; }
+.lens-cabal-funder { font-size: 9px; color: #7d96ab; margin-bottom: 6px; font-family: monospace; }
+.lens-cabal-wallets { display: flex; flex-wrap: wrap; gap: 4px; }
+.lens-cabal-w {
+  font-size: 10px; font-family: monospace; color: #c3d2e0;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 5px; padding: 2px 6px; user-select: none; -webkit-user-select: none;
+}
+.lens-cabal-w:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* ── AI Verdict (Aevon) ── */
+.lens-ai-badge { font-size:8px; font-weight:700; letter-spacing:1px; padding:2px 5px; border-radius:4px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); color:#cdd9e6; }
+.lens-verdict-level { display:inline-block; font-size:10px; font-weight:800; letter-spacing:.5px; padding:3px 9px; border-radius:6px; }
+.lens-verdict-level.bad { background:rgba(240,86,74,.14); border:1px solid rgba(240,86,74,.4); color:#ff7a70; }
+.lens-verdict-level.warn { background:rgba(216,160,90,.12); border:1px solid rgba(216,160,90,.35); color:#e0a85a; }
+.lens-verdict-level.ok { background:rgba(74,222,128,.12); border:1px solid rgba(74,222,128,.35); color:#7fdca0; }
+.lens-verdict-text { margin-top:7px; font-size:13px; line-height:1.42; color:#e6edf5; }
+
+/* ── Linked Accounts (network) ── */
+.lens-net-badge { font-size:8px; font-weight:700; letter-spacing:1px; padding:2px 5px; border-radius:4px; background:rgba(216,160,90,.12); border:1px solid rgba(216,160,90,.3); color:#d8a05a; }
+.lens-linked-accts { display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; }
+.lens-linked-acct { font-size:11px; font-family:monospace; padding:2px 7px; border-radius:6px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); color:#cdd9e6; text-decoration:none; }
+.lens-linked-acct:hover { background:rgba(255,255,255,.12); }
+.lens-linked-more { font-size:10px; color:#7d8c9b; align-self:center; }
+
+/* ── Token Health ── */
+.lens-health-badge { font-size:8px; font-weight:700; letter-spacing:1px; padding:2px 5px; border-radius:4px; background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.28); color:#7fdca0; }
+
+/* ── Funding Trail ── */
+.lens-funding-sib { display:flex; align-items:center; gap:6px; margin:3px 0; }
+.lens-funding-known { font-size:10px; color:#7fdca0; font-family:monospace; }
+
+/* ── Chip bar (Frontrun-style compact nav) ── */
+.lens-chips { display:flex; flex-wrap:wrap; gap:6px; padding:10px 16px 6px; }
+.lens-chip { font-family:'DM Mono', ui-monospace, monospace; font-size:11px; font-weight:600; letter-spacing:.3px; color:#9fb0c4; background:rgba(255,255,255,0.02); border:1px solid rgba(130,160,210,0.18); border-radius:7px; padding:5px 11px; cursor:pointer; user-select:none; transition:all .15s; line-height:1; }
+.lens-chip:hover { color:#fff; border-color:rgba(130,160,210,0.4); background:rgba(255,255,255,0.05); }
+.lens-chip.active { color:#cdd9ff; background:rgba(74,114,255,0.16); border-color:rgba(74,114,255,0.5); }
+.lens-chip-soon { opacity:.5; }
+/* chip-controlled sections: chip is the nav, so hide the stacked header + separators */
+.lens-chipped > .lens-section-header { display:none; }
+.lens-chipped { border-top:none; }
+.lens-chipped:not(.collapsed) { border-top:1px solid rgba(130,160,210,0.08); margin-top:2px; }
+
+/* ── Smart Follower grid ── */
+.lens-smart-grid { display:flex; flex-wrap:wrap; gap:6px; }
+.lens-smart-item { display:flex; align-items:center; gap:6px; padding:4px 10px 4px 4px; border:1px solid rgba(130,160,210,0.18); border-radius:20px; background:rgba(255,255,255,0.02); color:#cdd9ff; text-decoration:none; transition:all .15s; }
+.lens-smart-item:hover { border-color:rgba(74,114,255,0.5); background:rgba(74,114,255,0.1); }
+.lens-smart-av { width:22px; height:22px; border-radius:50%; overflow:hidden; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#2a3340; color:#9fb0c4; font-size:9px; font-weight:700; font-family:monospace; }
+.lens-smart-av img { width:100%; height:100%; object-fit:cover; display:block; }
+.lens-smart-name { font-size:12px; font-weight:600; color:#cdd9ff; }
+
+/* ── Smart Follower under profile name ── */
+.lens-smart-nb { display:inline-flex; align-items:center; gap:5px; padding:2px 8px 2px 3px; border:1px solid #2f3b47; border-radius:20px; background:rgba(74,114,255,0.06); color:#cdd9ff; text-decoration:none; font-size:11px; font-weight:600; font-family:-apple-system,system-ui,sans-serif; }
+.lens-smart-nb:hover { border-color:rgba(74,114,255,0.5); }
+.lens-smart-nb .lens-smart-name { font-size:11px; }
+.lens-smart-nb-label { font-size:9px; font-weight:700; letter-spacing:1px; color:#8899a6; margin-right:1px; font-family:'DM Mono',monospace; }
+
+.lens-smart-lbl { cursor:default; opacity:.92; }
